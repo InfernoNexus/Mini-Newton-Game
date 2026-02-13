@@ -8,13 +8,8 @@
       text-align: center;
       font-family: Arial;
       background: linear-gradient(#9fdcff, #eef9ff);
+    
     }
-<button onclick="restartGame()">Restart Game</button>
-
-<div id="controls">
-  <button id="leftBtn">⬅️</button>
-  <button id="rightBtn">➡️</button>
-</div>
 
     canvas {
       display: block;
@@ -60,7 +55,12 @@
 <h2>🍎 Newton & Gravity 🍎</h2>
 
 <canvas id="game" width="520" height="620"></canvas>
+<button onclick="restartGame()">Restart Game</button>
 
+<div id="controls">
+  <button id="leftBtn">⬅️</button>
+  <button id="rightBtn">➡️</button>
+</div>
 
 <!-- Background Music -->
 <audio id="bgm" loop>
@@ -258,4 +258,5 @@ gameLoop();
 
 </body>
 </html>
+
 
