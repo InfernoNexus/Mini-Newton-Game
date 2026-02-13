@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Newton & Gravity</title>
+  <style>
+    body {
+      margin: 0;
+      text-align: center;
+      font-family: Arial;
+      background: linear-gradient(#9fdcff, #eef9ff);
+    }
+
+    canvas {
+      display: block;
+      margin: auto;
+      background: linear-gradient(#87ceeb 60%, #4caf50 60%);
+      border: 4px solid #000;
+      border-radius:32px;
+    }
+
+    button {
+      margin: 14px;
+      padding: 10px 28px;
+      font-size: 50px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: #ff3333;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🍎 Newton & Gravity 🍎</h2>
+
+<canvas id="game" width="520" height="620"></canvas>
+<button onclick="restartGame()">Restart Game</button>
+
+<!-- Background Music -->
+<audio id="bgm" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_0f7c38a88e.mp3?filename=peaceful-garden-12257.mp3">
+</audio>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const music = document.getElementById("bgm");
+
+let newtonX = 215;
+let appleX = Math.random() * 480;
+let appleY = 0;
+
+let score = 0;
+let speed = 5;
+let lives = 1;
+let gameOver = false;
+
+/* ---------- CLOUDS ---------- */
+let clouds = [
+  { x: 50, y: 80, speed: 0.3 },
+  { x: 250, y: 120, speed: 0.2 },
+  { x: 400, y: 60, speed: 0.25 }
+];
+
+document.addEventListener("keydown", moveNewton);
+
+function moveNewton(e) {
+  if (e.key === "ArrowLeft" && newtonX > 20) newtonX -= 25;
+  if (e.key === "ArrowRight" && newtonX < 410) newtonX += 25;
+}
+
+/* ---------- BACKGROUND ---------- */
+function drawBackground() {
+  // Tree
+  ctx.fillStyle = "#5a3a1e";
+  ctx.fillRect(90, 260, 45, 220);
+
+  ctx.beginPath();
+  ctx.arc(112, 240, 95, 0, Math.PI * 2);
+  ctx.fillStyle = "#2e8b57";
+  ctx.fill();
+}
+
+/* ---------- CLOUDS ---------- */
+function drawClouds() {
+  ctx.fillStyle = "rgba(255,255,255,0.9)";
+  clouds.forEach(c => {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, 20, 0, Math.PI * 2);
+    ctx.arc(c.x + 25, c.y + 5, 25, 0, Math.PI * 2);
+    ctx.arc(c.x + 55, c.y, 20, 0, Math.PI * 2);
+    ctx.fill();
+
+    c.x += c.speed;
+    if (c.x > canvas.width + 60) c.x = -60;
+  });
+}
+
+/* ---------- NEWTON ---------- */
+function drawNewton() {
+  ctx.fillStyle = "rgba(0,0,0,0.25)";
+  ctx.beginPath();
+  ctx.ellipse(newtonX + 50, 565, 42, 10, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = "#6b3f2a";
+  ctx.fillRect(newtonX, 455, 100, 95);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(newtonX + 40, 455, 20, 70);
+
+  ctx.beginPath();
+  ctx.arc(newtonX + 50, 420, 26, 0, Math.PI * 2);
+  ctx.fillStyle = "#f1c27d";
+  ctx.fill();
+
+  ctx.fillStyle = "#f0f0f0";
+  ctx.beginPath();
+  ctx.arc(newtonX + 50, 410, 32, Math.PI, 0);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(newtonX + 18, 425, 14, 0, Math.PI * 2);
+  ctx.arc(newtonX + 82, 425, 14, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = "black";
+  ctx.beginPath();
+  ctx.arc(newtonX + 42, 420, 2.5, 0, Math.PI * 2);
+  ctx.arc(newtonX + 58, 420, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = "#000";
+  ctx.fillRect(newtonX + 28, 550, 16, 45);
+  ctx.fillRect(newtonX + 56, 550, 16, 45);
+}
+
+/* ---------- APPLE ---------- */
+function drawApple() {
+  ctx.beginPath();
+  ctx.arc(appleX, appleY, 15, 0, Math.PI * 2);
+  ctx.fillStyle = "red";
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(appleX - 5, appleY -6 , 4, 0, Math.PI * 2);
+  ctx.fillStyle = "#ffaaaa";
+  ctx.fill();
+
+  ctx.fillStyle = "brown";
+  ctx.fillRect(appleX - 1, appleY - 22, 2, 10);
+}
+
+function resetApple() {
+  appleY = 0;
+  appleX = Math.random() * 480;
+}
+
+/* ---------- RESTART ---------- */
+function restartGame() {
+  score = 0;
+  speed = 5;
+  lives = 0;
+  gameOver =False;
+  resetApple();
+
+  music.volume = 5;
+  music.play();
+
+  gameLoop();
+}
+
+/* ---------- GAME LOOP ---------- */
+function gameLoop() {
+  if (gameOver) {
+    ctx.fillStyle = "rgba(0,0,0,0.65)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "red";
+    ctx.font = "38px Arial";
+    ctx.fillText("GAME OVER", 150, 300);
+
+    ctx.fillStyle = "white";
+    ctx.font = "20px Arial";
+    ctx.fillText("Score: " + score, 215, 340);
+    return;
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  drawClouds();
+  drawBackground();
+  drawNewton();
+  drawApple();
+
+  ctx.fillStyle = "black";
+  ctx.font = "18px Arial";
+  ctx.fillText("Score: " + score, 20, 30);
+  ctx.fillText("Life: " + lives, 440, 30);
+
+  appleY += speed;
+
+  if (appleY > 440 && appleX > newtonX && appleX < newtonX + 100) {
+    score++;
+    if (score % 4 === 0) speed += 1;
+    if ( score  %  6===0) speed+=2;
+
+    resetApple();
+  }
+
+  if (appleY > canvas.height) {
+    gameOver = true;
+    music.pause();
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+resetApple();
+gameLoop();
+</script>
+
+</body>
+</html>
