@@ -29,25 +29,11 @@
       background: #ff3333;
       color: black;
     }
-    /* Mobile Controls Styling */
-#controls {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+    #controls {
   display: flex;
-  gap: 20px;
   justify-content: center;
-  z-index: 10;
-}
-
-#controls button {
-  font-size: 26px;
-  padding: 14px 22px;
-  border-radius: 12px;
-  border: none;
-  background: #ff9800;
-  color: white;
+  gap: 20px;
+  margin-top: 15px;
 }
 
   </style>
@@ -59,8 +45,7 @@
 <h2>🍎 Newton & Gravity 🍎</h2>
 
 <canvas id="game" width="520" height="620"></canvas>
-<button onclick="restartGame()">Restart Game</button>
-
+<button class="restart-btn" onclick="restartGame()">Restart Game</button> 
 <div id="controls">
   <button id="leftBtn">⬅️</button>
   <button id="rightBtn">➡️</button>
