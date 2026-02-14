@@ -69,6 +69,7 @@ let score = 0;
 let speed = 5;
 let lives = 1;
 let gameOver = false;
+let isGolden = false; // tells if current apple is golden
 
 /* ---------- CLOUDS ---------- */
 let clouds = [
@@ -177,7 +178,14 @@ function drawApple() {
 
 function resetApple() {
   appleY = 0;
-  appleX = Math.random() * 480;
+
+  const margin = 30;
+  appleX = margin + Math.random() * (canvas.width - margin * 2);
+
+  // 20% chance to spawn golden apple
+  isGolden = Math.random() < 0.2;
+}
+
 }
 
 /* ---------- RESTART ---------- */
@@ -247,5 +255,6 @@ gameLoop();
 
 </body>
 </html>
+
 
 
