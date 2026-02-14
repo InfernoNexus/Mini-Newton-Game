@@ -164,17 +164,21 @@ function drawNewton() {
 function drawApple() {
   ctx.beginPath();
   ctx.arc(appleX, appleY, 15, 0, Math.PI * 2);
-  ctx.fillStyle = "red";
+
+  // If golden, draw gold color
+  ctx.fillStyle = isGolden ? "gold" : "red";
   ctx.fill();
 
+  // Shine effect
   ctx.beginPath();
-  ctx.arc(appleX - 5, appleY -6 , 4, 0, Math.PI * 2);
-  ctx.fillStyle = "#ffaaaa";
+  ctx.arc(appleX - 5, appleY - 6, 4, 0, Math.PI * 2);
+  ctx.fillStyle = isGolden ? "#fff4a3" : "#ffaaaa";
   ctx.fill();
 
   ctx.fillStyle = "brown";
   ctx.fillRect(appleX - 1, appleY - 22, 2, 10);
 }
+
 
 function resetApple() {
   appleY = 0;
@@ -184,8 +188,6 @@ function resetApple() {
 
   // 20% chance to spawn golden apple
   isGolden = Math.random() < 0.2;
-}
-
 }
 
 /* ---------- RESTART ---------- */
@@ -233,7 +235,11 @@ function gameLoop() {
   appleY += speed;
 
   if (appleY > 440 && appleX > newtonX && appleX < newtonX + 100) {
-    score++;
+    if (isGolden) {
+  score += 5;   // golden apple bonus
+} else {
+  score += 1;   // normal apple
+}
     if (score % 4 === 0) speed += 1;
     if ( score  %  6===0) speed+=2;
 
@@ -255,6 +261,7 @@ gameLoop();
 
 </body>
 </html>
+
 
 
 
