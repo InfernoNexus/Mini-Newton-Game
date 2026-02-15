@@ -151,20 +151,57 @@ function moveNewton(e){
 }
 
 // ---------------- DRAW FUNCTIONS ----------------
-function drawBackground(){
-  // Tree trunk (static)
-  ctx.drawImage(barkTexture, 90, 260);
+function drawBackground() {
 
-  // Tree leaves
-  for(let i=0;i<5;i++){
+  // --- Soft storybook sky ---
+  const sky = ctx.createLinearGradient(0,0,0,canvas.height);
+  sky.addColorStop(0,"#f6d7a7");
+  sky.addColorStop(1,"#fff3df");
+  ctx.fillStyle = sky;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // --- Cloud puffs ---
+  ctx.fillStyle="rgba(255,255,255,0.7)";
+  for(let i=0;i<6;i++){
+    let x = 60 + i*80;
+    let y = 80 + (i%2)*25;
     ctx.beginPath();
-    ctx.arc(112+Math.random()*30-15,230+Math.random()*25-12,75+Math.random()*10,0,Math.PI*2);
-    const leafGrad = ctx.createRadialGradient(112,220,30,112,240,100);
-    leafGrad.addColorStop(0,"#81c784");
-    leafGrad.addColorStop(1,"#1b5e20");
-    ctx.fillStyle = leafGrad;
+    ctx.arc(x,y,25,0,Math.PI*2);
+    ctx.arc(x+25,y+5,30,0,Math.PI*2);
+    ctx.arc(x+50,y,25,0,Math.PI*2);
     ctx.fill();
   }
+
+  // --- Rounded green frame like image ---
+  ctx.lineWidth = 18;
+  ctx.strokeStyle = "#6cab3d";
+  ctx.lineJoin = "round";
+  ctx.strokeRect(10,10,canvas.width-20,canvas.height-20);
+
+  // --- Grass ground ---
+  const grassGrad = ctx.createLinearGradient(0,420,0,canvas.height);
+  grassGrad.addColorStop(0,"#7ec850");
+  grassGrad.addColorStop(1,"#3f7d2a");
+  ctx.fillStyle = grassGrad;
+  ctx.fillRect(0,420,canvas.width,200);
+
+  // Little flowers
+  for(let i=0;i<25;i++){
+    let x = Math.random()*canvas.width;
+    let y = 440 + Math.random()*150;
+
+    ctx.fillStyle="white";
+    ctx.beginPath();
+    ctx.arc(x,y,3,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.fillStyle="pink";
+    ctx.beginPath();
+    ctx.arc(x+2,y+2,2,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  drawTree(); // call the static tree
 }
 
 function drawGrass(){ ctx.drawImage(grassTexture,0,440); }
@@ -193,14 +230,35 @@ function drawNewton(){
   ctx.fillStyle="#000"; ctx.fillRect(newtonX+28,550,16,45); ctx.fillRect(newtonX+56,550,16,45);
 }
 
-function drawApple(){
-  const appleGrad = ctx.createRadialGradient(appleX-4,appleY-6,2,appleX,appleY,16);
-  appleGrad.addColorStop(0,isGolden?"#fff7b3":"#ff6b6b");
-  appleGrad.addColorStop(1,isGolden?"#d4af37":"#b71c1c");
-  ctx.fillStyle=appleGrad;
-  ctx.beginPath(); ctx.arc(appleX,appleY,15,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(appleX-5,appleY-6,4,0,Math.PI*2); ctx.fillStyle=isGolden?"#fff4a3":"#ffaaaa"; ctx.fill();
-  ctx.fillStyle="brown"; ctx.fillRect(appleX-1,appleY-22,2,10);
+
+  function drawApple(){
+
+  const appleGrad = ctx.createRadialGradient(
+    appleX-4,appleY-6,3,
+    appleX,appleY,18
+  );
+
+  appleGrad.addColorStop(0,"#ff8a80");
+  appleGrad.addColorStop(1,"#c62828");
+
+  ctx.fillStyle = appleGrad;
+  ctx.beginPath();
+  ctx.arc(appleX,appleY,14,0,Math.PI*2);
+  ctx.fill();
+
+  // highlight
+  ctx.fillStyle="rgba(255,255,255,0.4)";
+  ctx.beginPath();
+  ctx.arc(appleX-5,appleY-5,5,0,Math.PI*2);
+  ctx.fill();
+
+  // stem
+  ctx.strokeStyle="#5d4037";
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(appleX,appleY-14);
+  ctx.lineTo(appleX+2,appleY-22);
+  ctx.stroke();
 }
 
 // ---------------- GAME LOGIC ----------------
