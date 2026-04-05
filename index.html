@@ -1,307 +1,105 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Newton & Gravity</title>
-<style>
-body {
-  margin: 0;
-  text-align: center;
-  font-family: Arial;
-  background: linear-gradient(#9fdcff, #eef9ff);
-}
-canvas {
-  display: block;
-  margin: auto;
-  background: #87ceeb;
-  border: 4px solid #000;
-  border-radius: 32px;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dr Karthika Skin Clinic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; }section { padding: 80px 20px; }
 
-/* Phone/game buttons */
-#controls {
+.hero {
+  height: 100vh;
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 25px;
-  margin-top: 15px;
-}
-#controls button {
-  font-size: 36px;
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  border: 3px solid #444;
-  background: linear-gradient(#ff6666,#cc2222);
-  color: white;
-  box-shadow: 0 6px #aa0000;
-  cursor: pointer;
-  transition: all 0.1s ease-in-out;
-}
-#controls button:active {
-  box-shadow: 0 2px #aa0000;
-  transform: translateY(4px);
+  text-align: center;
+  background: linear-gradient(135deg, #dbeafe, #e9d5ff);
+  animation: fadeIn 1.5s ease-in;
 }
 
-/* Restart button */
-.restart-btn {
-  font-size: 22px;
+.hero h1 { font-size: 3rem; margin-bottom: 15px; }
+.hero p { margin-bottom: 20px; }
+
+.btn {
   padding: 12px 24px;
-  border-radius: 12px;
-  border: 3px solid #444;
-  background: linear-gradient(#ff6666,#cc2222);
+  background: #3b82f6;
   color: white;
-  box-shadow: 0 5px #aa0000;
+  border: none;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.1s ease-in-out;
-}
-.restart-btn:active {
-  box-shadow: 0 2px #aa0000;
-  transform: translateY(3px);
+  transition: 0.3s;
 }
 
-@media (max-width: 600px) {
-  canvas { width: 95%; height: auto; }
-  #controls button { width: 70px; height: 70px; font-size: 28px; }
-  .restart-btn { font-size: 18px; padding: 10px 18px; }
+.btn:hover { transform: scale(1.05); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
 }
-</style>
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: 0.3s;
+}
+
+.card:hover { transform: translateY(-10px); }
+
+.about { background: #f9fafb; text-align: center; }
+.contact { background: #eff6ff; text-align: center; }
+
+footer {
+  background: #111827;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+iframe { width: 100%; height: 300px; border: none; margin-top: 20px; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+  </style>
 </head>
-<body>
+<body>  <section class="hero">
+    <div>
+      <h1>Dr Karthika Skin Clinic</h1>
+      <p>Personalized Skin Care for Every Age</p>
+      <button class="btn">Book Appointment</button>
+    </div>
+  </section>  <section>
+    <h2 style="text-align:center; margin-bottom:40px;">Our Services</h2>
+    <div class="grid">
+      <div class="card">Skin Treatment</div>
+      <div class="card">Hair Care</div>
+      <div class="card">Laser Therapy</div>
+      <div class="card">Cosmetic Care</div>
+    </div>
+  </section>  <section class="about">
+    <h2>About Us</h2>
+    <p style="max-width:600px; margin:20px auto;">
+      We provide high-quality dermatology treatments with a focus on patient comfort and modern technology.
+    </p>
+  </section>  <section>
+    <h2 style="text-align:center; margin-bottom:40px;">Testimonials</h2>
+    <div class="grid">
+      <div class="card">"Excellent treatment and friendly staff"</div>
+      <div class="card">"Very satisfied with results"</div>
+      <div class="card">"Highly recommended clinic"</div>
+    </div>
+  </section>  <section class="contact">
+    <h2>Contact & Location</h2>
+    <p>Coimbatore, Tamil Nadu</p><iframe src="https://www.google.com/maps?q=Dr%20Karthika%20Skin%20Clinic%20Coimbatore&output=embed"></iframe>
 
-<h2>🍎 Newton & Gravity 🍎</h2>
-<canvas id="game" width="520" height="620"></canvas>
-
-<div id="mobile-ui">
-  <div id="controls">
-    <button id="leftBtn">⬅️</button>
-    <button id="rightBtn">➡️</button>
-  </div>
-  <button class="restart-btn" onclick="restartGame()">Restart Game</button>
-</div>
-
-<audio id="bgm" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_0f7c38a88e.mp3?filename=peaceful-garden-12257.mp3">
-</audio>
-
-<script>
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-const music = document.getElementById("bgm");
-
-// ---------------- VARIABLES ----------------
-let newtonX = 215;
-let appleX = Math.random() * 480;
-let appleY = 0;
-let score = 0;
-let speed = 5;
-let lives = 1;
-let gameOver = false;
-let isGolden = false;
-
-let clouds = [
-  { x: 50, y: 80, speed: 0.3 },
-  { x: 250, y: 120, speed: 0.2 },
-  { x: 400, y: 60, speed: 0.25 }
-];
-
-// ---------------- TEXTURES ----------------
-// Bark Texture (static tree trunk)
-const barkTexture = document.createElement("canvas");
-barkTexture.width = 45;
-barkTexture.height = 220;
-const barkCtx = barkTexture.getContext("2d");
-barkCtx.fillStyle = "#6d4c41";
-barkCtx.fillRect(0,0,45,220);
-for(let i=0;i<70;i++){
-  barkCtx.strokeStyle = "rgba(0,0,0,0.2)";
-  barkCtx.beginPath();
-  let x = Math.random()*45;
-  barkCtx.moveTo(x,0);
-  barkCtx.lineTo(x + Math.random()*2-1, 220);
-  barkCtx.stroke();
-}
-
-// Grass texture
-const grassTexture = document.createElement("canvas");
-grassTexture.width = canvas.width;
-grassTexture.height = 180;
-const grassCtx = grassTexture.getContext("2d");
-const g = grassCtx.createLinearGradient(0,0,0,180);
-g.addColorStop(0,"#4caf50");
-g.addColorStop(1,"#2e7d32");
-grassCtx.fillStyle = g;
-grassCtx.fillRect(0,0,grassTexture.width,180);
-for(let i=0;i<450;i++){
-  let x = Math.random()*grassTexture.width;
-  let h = 10 + Math.random()*18;
-  grassCtx.strokeStyle="rgba(0,70,0,0.35)";
-  grassCtx.beginPath();
-  grassCtx.moveTo(x,180);
-  grassCtx.quadraticCurveTo(x + Math.random()*6-3, 180-h/2, x + Math.random()*4-2, 180-h);
-  grassCtx.stroke();
-}
-
-// ---------------- CONTROLS ----------------
-document.addEventListener("keydown", moveNewton);
-document.getElementById("leftBtn").ontouchstart = ()=>{ if(newtonX>20)newtonX-=30; };
-document.getElementById("rightBtn").ontouchstart = ()=>{ if(newtonX<410)newtonX+=30; };
-function moveNewton(e){
-  if(e.key==="ArrowLeft" && newtonX>20) newtonX-=25;
-  if(e.key==="ArrowRight" && newtonX<410) newtonX+=25;
-}
-
-// ---------------- DRAW FUNCTIONS ----------------
-function drawBackground() {
-
-  // --- Soft storybook sky ---
-  const sky = ctx.createLinearGradient(0,0,0,canvas.height);
-  sky.addColorStop(0,"#f6d7a7");
-  sky.addColorStop(1,"#fff3df");
-  ctx.fillStyle = sky;
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  // --- Cloud puffs ---
-  ctx.fillStyle="rgba(255,255,255,0.7)";
-  for(let i=0;i<6;i++){
-    let x = 60 + i*80;
-    let y = 80 + (i%2)*25;
-    ctx.beginPath();
-    ctx.arc(x,y,25,0,Math.PI*2);
-    ctx.arc(x+25,y+5,30,0,Math.PI*2);
-    ctx.arc(x+50,y,25,0,Math.PI*2);
-    ctx.fill();
-  }
-
-  // --- Rounded green frame like image ---
-  ctx.lineWidth = 18;
-  ctx.strokeStyle = "#6cab3d";
-  ctx.lineJoin = "round";
-  ctx.strokeRect(10,10,canvas.width-20,canvas.height-20);
-
-  // --- Grass ground ---
-  const grassGrad = ctx.createLinearGradient(0,420,0,canvas.height);
-  grassGrad.addColorStop(0,"#7ec850");
-  grassGrad.addColorStop(1,"#3f7d2a");
-  ctx.fillStyle = grassGrad;
-  ctx.fillRect(0,420,canvas.width,200);
-
-  // Little flowers
-  for(let i=0;i<25;i++){
-    let x = Math.random()*canvas.width;
-    let y = 440 + Math.random()*150;
-
-    ctx.fillStyle="white";
-    ctx.beginPath();
-    ctx.arc(x,y,3,0,Math.PI*2);
-    ctx.fill();
-
-    ctx.fillStyle="pink";
-    ctx.beginPath();
-    ctx.arc(x+2,y+2,2,0,Math.PI*2);
-    ctx.fill();
-  }
-
-  drawTree(); // call the static tree
-}
-
-function drawGrass(){ ctx.drawImage(grassTexture,0,440); }
-
-function drawClouds(){
-  ctx.fillStyle="rgba(255,255,255,0.9)";
-  clouds.forEach(c=>{
-    ctx.beginPath();
-    ctx.arc(c.x,c.y,20,0,Math.PI*2);
-    ctx.arc(c.x+25,c.y+5,25,0,Math.PI*2);
-    ctx.arc(c.x+55,c.y,20,0,Math.PI*2);
-    ctx.fill();
-    c.x+=c.speed; if(c.x>canvas.width+60) c.x=-60;
-  });
-}
-
-function drawNewton(){
-  ctx.fillStyle="rgba(0,0,0,0.25)";
-  ctx.beginPath(); ctx.ellipse(newtonX+50,565,42,10,0,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle="#6b3f2a"; ctx.fillRect(newtonX,455,100,95);
-  ctx.fillStyle="#ffffff"; ctx.fillRect(newtonX+40,455,20,70);
-  ctx.beginPath(); ctx.arc(newtonX+50,420,26,0,Math.PI*2); ctx.fillStyle="#f1c27d"; ctx.fill();
-  ctx.fillStyle="#f0f0f0"; ctx.beginPath(); ctx.arc(newtonX+50,410,32,Math.PI,0); ctx.fill();
-  ctx.beginPath(); ctx.arc(newtonX+18,425,14,0,Math.PI*2); ctx.arc(newtonX+82,425,14,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle="black"; ctx.beginPath(); ctx.arc(newtonX+42,420,2.5,0,Math.PI*2); ctx.arc(newtonX+58,420,2.5,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle="#000"; ctx.fillRect(newtonX+28,550,16,45); ctx.fillRect(newtonX+56,550,16,45);
-}
-
-
-  function drawApple(){
-
-  const appleGrad = ctx.createRadialGradient(
-    appleX-4,appleY-6,3,
-    appleX,appleY,18
-  );
-
-  appleGrad.addColorStop(0,"#ff8a80");
-  appleGrad.addColorStop(1,"#c62828");
-
-  ctx.fillStyle = appleGrad;
-  ctx.beginPath();
-  ctx.arc(appleX,appleY,14,0,Math.PI*2);
-  ctx.fill();
-
-  // highlight
-  ctx.fillStyle="rgba(255,255,255,0.4)";
-  ctx.beginPath();
-  ctx.arc(appleX-5,appleY-5,5,0,Math.PI*2);
-  ctx.fill();
-
-  // stem
-  ctx.strokeStyle="#5d4037";
-  ctx.lineWidth=2;
-  ctx.beginPath();
-  ctx.moveTo(appleX,appleY-14);
-  ctx.lineTo(appleX+2,appleY-22);
-  ctx.stroke();
-}
-
-// ---------------- GAME LOGIC ----------------
-function resetApple(){
-  appleY=0;
-  const margin=30; appleX=margin+Math.random()*(canvas.width-margin*2);
-  isGolden=Math.random()<0.2;
-}
-
-function restartGame(){
-  score=0; speed=5; lives=1; gameOver=false;
-  resetApple();
-  music.volume=0.5; music.play();
-  gameLoop();
-}
-
-function gameLoop(){
-  if(gameOver){
-    ctx.fillStyle="rgba(0,0,0,0.65)"; ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="red"; ctx.font="38px Arial"; ctx.fillText("GAME OVER",150,300);
-    ctx.fillStyle="white"; ctx.font="20px Arial"; ctx.fillText("Score: "+score,215,340);
-    return;
-  }
-
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  drawClouds(); drawBackground(); drawGrass(); drawNewton(); drawApple();
-  ctx.fillStyle="black"; ctx.font="18px Arial";
-  ctx.fillText("Score: "+score,20,30); ctx.fillText("Life: "+lives,440,30);
-
-  appleY+=speed;
-  if(appleY>440 && appleX>newtonX && appleX<newtonX+100){
-    score+=isGolden?5:1;
-    if(score%4===0) speed+=1;
-    if(score%6===0) speed+=2;
-    resetApple();
-  }
-  if(appleY>canvas.height){ gameOver=true; music.pause(); }
-  requestAnimationFrame(gameLoop);
-}
-
-// ---------------- START ----------------
-resetApple();
-gameLoop();
-</script>
-</body>
+  </section>  <footer>
+    <p>© 2026 Dr Karthika Skin Clinic</p>
+  </footer></body>
 </html>
