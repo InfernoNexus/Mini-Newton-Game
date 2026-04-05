@@ -3,10 +3,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dr Karthika Skin Clinic</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Poppins', sans-serif; }section { padding: 80px 20px; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      overflow-x: hidden;
+    }section { padding: 100px 20px; }
 
 .hero {
   height: 100vh;
@@ -14,92 +19,139 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(135deg, #dbeafe, #e9d5ff);
-  animation: fadeIn 1.5s ease-in;
+  position: relative;
 }
 
-.hero h1 { font-size: 3rem; margin-bottom: 15px; }
-.hero p { margin-bottom: 20px; }
+.glass {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  animation: fadeUp 1s ease forwards;
+}
+
+h1 { font-size: 3.5rem; margin-bottom: 10px; }
+p { opacity: 0.8; }
 
 .btn {
-  padding: 12px 24px;
-  background: #3b82f6;
-  color: white;
-  border: none;
+  margin-top: 20px;
+  padding: 14px 28px;
   border-radius: 12px;
+  border: none;
+  background: linear-gradient(90deg, #3b82f6, #9333ea);
+  color: white;
   cursor: pointer;
   transition: 0.3s;
 }
 
-.btn:hover { transform: scale(1.05); }
+.btn:hover { transform: scale(1.08); }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
 }
 
 .card {
-  background: white;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  text-align: center;
-  transition: 0.3s;
+  padding: 30px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(15px);
+  transition: 0.4s;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-.card:hover { transform: translateY(-10px); }
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+}
 
-.about { background: #f9fafb; text-align: center; }
-.contact { background: #eff6ff; text-align: center; }
+.section-title {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 50px;
+}
+
+.contact {
+  text-align: center;
+}
+
+iframe {
+  width: 100%;
+  height: 350px;
+  border-radius: 20px;
+  margin-top: 20px;
+  border: none;
+}
 
 footer {
-  background: #111827;
-  color: white;
   text-align: center;
-  padding: 20px;
+  padding: 30px;
+  background: #020617;
+  opacity: 0.8;
 }
 
-iframe { width: 100%; height: 300px; border: none; margin-top: 20px; }
-
-@keyframes fadeIn {
+@keyframes fadeUp {
   from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: 0.8s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
   </style>
 </head>
 <body>  <section class="hero">
-    <div>
+    <div class="glass">
       <h1>Dr Karthika Skin Clinic</h1>
-      <p>Personalized Skin Care for Every Age</p>
+      <p>Modern Dermatology with Advanced Care</p>
       <button class="btn">Book Appointment</button>
     </div>
-  </section>  <section>
-    <h2 style="text-align:center; margin-bottom:40px;">Our Services</h2>
+  </section>  <section class="reveal">
+    <h2 class="section-title">Services</h2>
     <div class="grid">
       <div class="card">Skin Treatment</div>
       <div class="card">Hair Care</div>
       <div class="card">Laser Therapy</div>
       <div class="card">Cosmetic Care</div>
     </div>
-  </section>  <section class="about">
-    <h2>About Us</h2>
-    <p style="max-width:600px; margin:20px auto;">
-      We provide high-quality dermatology treatments with a focus on patient comfort and modern technology.
+  </section>  <section class="reveal">
+    <h2 class="section-title">About</h2>
+    <p style="max-width:600px; margin:auto; text-align:center;">
+      Delivering premium skincare solutions with modern technology and personalized treatment plans.
     </p>
-  </section>  <section>
-    <h2 style="text-align:center; margin-bottom:40px;">Testimonials</h2>
+  </section>  <section class="reveal">
+    <h2 class="section-title">Testimonials</h2>
     <div class="grid">
-      <div class="card">"Excellent treatment and friendly staff"</div>
-      <div class="card">"Very satisfied with results"</div>
-      <div class="card">"Highly recommended clinic"</div>
+      <div class="card">"Excellent experience"</div>
+      <div class="card">"Highly professional"</div>
+      <div class="card">"Great results"</div>
     </div>
-  </section>  <section class="contact">
-    <h2>Contact & Location</h2>
-    <p>Coimbatore, Tamil Nadu</p><iframe src="https://www.google.com/maps?q=Dr%20Karthika%20Skin%20Clinic%20Coimbatore&output=embed"></iframe>
-
+  </section>  <section class="contact reveal">
+    <h2 class="section-title">Contact</h2>
+    <p>Coimbatore, Tamil Nadu</p>
+    <iframe src="https://www.google.com/maps?q=Dr%20Karthika%20Skin%20Clinic%20Coimbatore&output=embed"></iframe>
   </section>  <footer>
     <p>© 2026 Dr Karthika Skin Clinic</p>
-  </footer></body>
+  </footer>  <script>
+    const reveals = document.querySelectorAll('.reveal');
+
+    window.addEventListener('scroll', () => {
+      reveals.forEach(el => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+        if (elementTop < windowHeight - 100) {
+          el.classList.add('active');
+        }
+      });
+    });
+  </script></body>
 </html>
